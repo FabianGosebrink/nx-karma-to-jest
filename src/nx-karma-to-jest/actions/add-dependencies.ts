@@ -30,8 +30,8 @@ export function modifyDependenciesInPackageJson(
   tree: Tree,
   _context: SchematicContext
 ) {
-  addDependenciesToPackageJson(tree, _context);
   deleteDependenciesFromPackageJson(tree);
+  addDependenciesToPackageJson(tree, _context);
 
   _context.addTask(new NodePackageInstallTask());
 }
@@ -60,7 +60,8 @@ function createNodeDependency(
 }
 
 export function deleteDependenciesFromPackageJson(tree: Tree) {
-  for (let packageName in dependenciesToRemove) {
-    removePackageJsonDependency(tree, packageName);
-  }
+  dependenciesToRemove.forEach(toRemove => {
+    console.log('removing ' + toRemove);
+    removePackageJsonDependency(tree, toRemove);
+  });
 }
