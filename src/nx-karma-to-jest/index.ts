@@ -4,7 +4,10 @@ import {
   Tree,
   SchematicsException
 } from '@angular-devkit/schematics';
-import { ANGULAR_JSON_FILENAME, isRealProject } from './utils/angular-utils';
+import {
+  ANGULAR_JSON_FILENAME,
+  hasTestingSection
+} from './utils/angular-utils';
 import { experimental } from '@angular-devkit/core';
 import {
   updateAngularJson,
@@ -33,18 +36,16 @@ export function nxKarmaToJest(_options: any): Rule {
     for (let [projectName, project] of allProjects) {
       const projectType = project.projectType === 'application' ? 'app' : 'lib';
 
-      if (!isRealProject(project, _context)) {
-        _context.logger.info(
+      if (!hasTestingSection(project, _context)) {
+        _context.logger.debug(
           `${projectName} (${projectType}) has no testing section, skipping...`
         );
         continue;
       }
 
-      _context.logger.info(`Processing: ${projectName} (${projectType})`);
       updateAngularJson(tree, _context, workspace, projectName);
       createJestFiles(tree, _context, workspace, projectName);
       deleteKarmaFiles(tree, _context, workspace, projectName);
-      _context.logger.info(`Done processing: ${projectName} (${projectType})`);
     }
 
     modifyDependenciesInPackageJson(tree, _context);

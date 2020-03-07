@@ -1,6 +1,10 @@
 {
   "name": "@fabiangosebrink/nx-karma-to-jest",
   "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/FabianGosebrink/nx-karma-to-jest.git"
+  },
   "description": "A blank schematics",
   "scripts": {
     "build": "tsc -p tsconfig.json",

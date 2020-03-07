@@ -3,7 +3,11 @@ import {
   Tree,
   SchematicsException
 } from '@angular-devkit/schematics';
-import { ANGULAR_JSON_FILENAME } from '../utils/angular-utils';
+import {
+  ANGULAR_JSON_FILENAME,
+  NX_ANGULAR_APPLICATION_IDENTIFIER,
+  NX_ANGULAR_LIBRARY_IDENTIFIER
+} from '../utils/angular-utils';
 import { experimental } from '@angular-devkit/core';
 
 export function updateAngularJson(
@@ -20,26 +24,24 @@ function updateSchematicTestRunner(
   workspace: experimental.workspace.WorkspaceSchema,
   _context: SchematicContext
 ) {
-  const nxAngularAppSection = '@nrwl/angular:application';
-  const nxAngularLibSection = '@nrwl/angular:library';
-
   if (!workspace?.schematics) {
-    _context.logger.info(`\tNo schematic section found`);
+    _context.logger.error(`\tNo schematic section found`);
     return;
   }
 
-  if (!workspace?.schematics[nxAngularAppSection]) {
-    _context.logger.info(`\tNo @nrwl/angular:application section found`);
+  if (!workspace?.schematics[NX_ANGULAR_LIBRARY_IDENTIFIER]) {
+    _context.logger.error(`\tNo @nrwl/angular:application section found`);
     return;
   }
 
-  workspace.schematics[nxAngularAppSection].unitTestRunner = 'jest';
+  workspace.schematics[NX_ANGULAR_LIBRARY_IDENTIFIER].unitTestRunner = 'jest';
 
-  if (!workspace?.schematics[nxAngularLibSection]) {
+  if (!workspace?.schematics[NX_ANGULAR_APPLICATION_IDENTIFIER]) {
     return;
   }
 
-  workspace.schematics[nxAngularLibSection].unitTestRunner = 'jest';
+  workspace.schematics[NX_ANGULAR_APPLICATION_IDENTIFIER].unitTestRunner =
+    'jest';
 }
 
 function updateProjectsTestSection(
