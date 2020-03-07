@@ -54,13 +54,6 @@ function updateProjectsTestSection(
     throw new SchematicsException(`Project ${projectName} not found`);
   }
 
-  const testSection = project?.architect['test'];
-
-  if (!testSection) {
-    _context.logger.info(`\tUpdated Testsection for ${projectName}`);
-    return;
-  }
-
   project.architect.test = getJestTestingObject(project.root);
 
   _context.logger.info(`\tUpdated Testsection for ${projectName}`);

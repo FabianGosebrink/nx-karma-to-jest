@@ -6,7 +6,7 @@ import {
 } from '@angular-devkit/schematics';
 import { ANGULAR_JSON_FILENAME } from './utils/angular-utils';
 import { experimental } from '@angular-devkit/core';
-import { updateAngularJson } from './actions';
+import { updateAngularJson, createJestFiles } from './actions';
 
 export function fgNxKarmaToJest(_options: any): Rule {
   return (tree: Tree, _context: SchematicContext) => {
@@ -29,6 +29,7 @@ export function fgNxKarmaToJest(_options: any): Rule {
       const projectType = project.projectType === 'application' ? 'app' : 'lib';
       _context.logger.info(`${projectName}: ${projectType}`);
       updateAngularJson(tree, _context, workspace, projectName);
+      createJestFiles(tree, _context, workspace, projectName);
     }
 
     return tree;
