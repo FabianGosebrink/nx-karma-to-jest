@@ -4,7 +4,7 @@ import {
   Tree,
   SchematicsException
 } from '@angular-devkit/schematics';
-import { ANGULAR_JSON_FILENAME } from './utils/angular-utils';
+import { ANGULAR_JSON_FILENAME, isRealProject } from './utils/angular-utils';
 import { experimental } from '@angular-devkit/core';
 import { updateAngularJson, createJestFiles } from './actions';
 
@@ -27,9 +27,18 @@ export function fgNxKarmaToJest(_options: any): Rule {
 
     for (let [projectName, project] of allProjects) {
       const projectType = project.projectType === 'application' ? 'app' : 'lib';
-      _context.logger.info(`${projectName}: ${projectType}`);
+
+      if (!isRealProject(project, _context)) {
+        _context.logger.info(
+          `${projectName} (${projectType}) has no testing section, skipping...`
+        );
+        continue;
+      }
+
+      _context.logger.info(`Processing: ${projectName} (${projectType})`);
       updateAngularJson(tree, _context, workspace, projectName);
       createJestFiles(tree, _context, workspace, projectName);
+      _context.logger.info(`Done processing: ${projectName} (${projectType})`);
     }
 
     return tree;
