@@ -1,13 +1,13 @@
 {
   "$schema": "../node_modules/@angular-devkit/schematics/collection-schema.json",
   "schematics": {
-    "fg-nx-karma-to-jest": {
-      "description": "A blank schematic.",
-      "factory": "./fg-nx-karma-to-jest/index#fgNxKarmaToJest"
+    "nx-karma-to-jest": {
+      "description": "Replacing Karma with Jest in an nx workspace",
+      "factory": "./nx-karma-to-jest/index#nxKarmaToJest"
     },
     "ng-add": {
-      "description": "A blank schematic.",
-      "factory": "./fg-nx-karma-to-jest/index#fgNxKarmaToJest"
+      "description": "Replacing Karma with Jest in an nx workspace",
+      "factory": "./nx-karma-to-jest/index#nxKarmaToJest"
     }
   }
 }

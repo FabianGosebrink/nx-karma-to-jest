@@ -13,7 +13,7 @@ import {
   modifyDependenciesInPackageJson
 } from './actions';
 
-export function fgNxKarmaToJest(_options: any): Rule {
+export function nxKarmaToJest(_options: any): Rule {
   return (tree: Tree, _context: SchematicContext) => {
     const workspaceConfig = tree.read(ANGULAR_JSON_FILENAME);
 
