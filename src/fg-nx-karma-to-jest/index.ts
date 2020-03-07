@@ -6,7 +6,7 @@ import {
 } from '@angular-devkit/schematics';
 import { ANGULAR_JSON_FILENAME } from './utils/angular-utils';
 import { experimental } from '@angular-devkit/core';
-import { updateCLIConfig } from './actions';
+import { updateAngularJson } from './actions';
 
 export function fgNxKarmaToJest(_options: any): Rule {
   return (tree: Tree, _context: SchematicContext) => {
@@ -28,7 +28,7 @@ export function fgNxKarmaToJest(_options: any): Rule {
     for (let [projectName, project] of allProjects) {
       const projectType = project.projectType === 'application' ? 'app' : 'lib';
       _context.logger.info(`${projectName}: ${projectType}`);
-      updateCLIConfig(tree, _context, workspace, project, projectName);
+      updateAngularJson(tree, _context, workspace, projectName);
     }
 
     return tree;

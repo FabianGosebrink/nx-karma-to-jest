@@ -6,61 +6,66 @@ import {
 import { ANGULAR_JSON_FILENAME } from '../utils/angular-utils';
 import { experimental } from '@angular-devkit/core';
 
-export function updateCLIConfig(
+export function updateAngularJson(
   tree: Tree,
   _context: SchematicContext,
   workspace: experimental.workspace.WorkspaceSchema,
-  project: experimental.workspace.WorkspaceProject,
   projectName: string
 ) {
-  const testSection = getTestSectionForProject(project);
+  updateProjectsTestSection(tree, _context, workspace, projectName);
+  updateSchematicTestRunner(workspace, _context);
+}
 
-  if (!testSection) {
-    _context.logger.info(` No testsection found for ${projectName}`);
+function updateSchematicTestRunner(
+  workspace: experimental.workspace.WorkspaceSchema,
+  _context: SchematicContext
+) {
+  const nxAngularAppSection = '@nrwl/angular:application';
+  const nxAngularLibSection = '@nrwl/angular:library';
+
+  if (!workspace?.schematics) {
+    _context.logger.info(`\tNo schematic section found`);
     return;
   }
 
-  const updatedWorkspace = updateTestSectionForProject(
-    workspace,
-    _context,
-    projectName
-  );
+  if (!workspace?.schematics[nxAngularAppSection]) {
+    _context.logger.info(`\tNo @nrwl/angular:application section found`);
+    return;
+  }
 
-  tree.overwrite(
-    ANGULAR_JSON_FILENAME,
-    JSON.stringify(updatedWorkspace, null, '\t')
-  );
+  workspace.schematics[nxAngularAppSection].unitTestRunner = 'jest';
+
+  if (!workspace?.schematics[nxAngularLibSection]) {
+    return;
+  }
+
+  workspace.schematics[nxAngularLibSection].unitTestRunner = 'jest';
 }
 
-function updateTestSectionForProject(
-  workspace: experimental.workspace.WorkspaceSchema,
+function updateProjectsTestSection(
+  tree: Tree,
   _context: SchematicContext,
+  workspace: experimental.workspace.WorkspaceSchema,
   projectName: string
 ) {
   const project = workspace.projects[projectName];
 
   if (!project?.architect) {
-    throw new SchematicsException(
-      'Could not find Angular workspace configuration'
-    );
+    throw new SchematicsException(`Project ${projectName} not found`);
+  }
+
+  const testSection = project?.architect['test'];
+
+  if (!testSection) {
+    _context.logger.info(`\tUpdated Testsection for ${projectName}`);
+    return;
   }
 
   project.architect.test = getJestTestingObject(project.root);
 
   _context.logger.info(`\tUpdated Testsection for ${projectName}`);
 
-  return workspace;
-}
-
-function getTestSectionForProject(
-  project: experimental.workspace.WorkspaceProject
-) {
-  if (!project.architect) {
-    throw new SchematicsException(
-      'Could not find Angular workspace configuration'
-    );
-  }
-  return project?.architect['test'];
+  tree.overwrite(ANGULAR_JSON_FILENAME, JSON.stringify(workspace, null, '\t'));
 }
 
 function getJestTestingObject(projectRoot: string) {
