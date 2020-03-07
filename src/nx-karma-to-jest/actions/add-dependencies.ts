@@ -61,7 +61,6 @@ function createNodeDependency(
 
 export function deleteDependenciesFromPackageJson(tree: Tree) {
   dependenciesToRemove.forEach(toRemove => {
-    console.log('removing ' + toRemove);
     removePackageJsonDependency(tree, toRemove);
   });
 }
