@@ -9,7 +9,8 @@ import { experimental } from '@angular-devkit/core';
 import {
   updateAngularJson,
   createJestFiles,
-  deleteKarmaFiles
+  deleteKarmaFiles,
+  modifyDependenciesInPackageJson
 } from './actions';
 
 export function fgNxKarmaToJest(_options: any): Rule {
@@ -45,6 +46,8 @@ export function fgNxKarmaToJest(_options: any): Rule {
       deleteKarmaFiles(tree, _context, workspace, projectName);
       _context.logger.info(`Done processing: ${projectName} (${projectType})`);
     }
+
+    modifyDependenciesInPackageJson(tree, _context);
 
     return tree;
   };
