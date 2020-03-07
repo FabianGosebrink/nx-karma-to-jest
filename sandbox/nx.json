@@ -1,0 +1,28 @@
+{
+  "npmScope": "schematics-test",
+  "implicitDependencies": {
+    "angular.json": "*",
+    "package.json": {
+      "dependencies": "*",
+      "devDependencies": "*"
+    },
+    "tsconfig.json": "*",
+    "tslint.json": "*",
+    "nx.json": "*"
+  },
+  "projects": {
+    "myapp": {
+      "tags": []
+    },
+    "myapp-e2e": {
+      "tags": [],
+      "implicitDependencies": ["myapp"]
+    },
+    "shared-lib1": {
+      "tags": []
+    },
+    "lib2": {
+      "tags": []
+    }
+  }
+}
