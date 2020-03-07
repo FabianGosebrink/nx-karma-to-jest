@@ -6,7 +6,11 @@ import {
 } from '@angular-devkit/schematics';
 import { ANGULAR_JSON_FILENAME, isRealProject } from './utils/angular-utils';
 import { experimental } from '@angular-devkit/core';
-import { updateAngularJson, createJestFiles } from './actions';
+import {
+  updateAngularJson,
+  createJestFiles,
+  deleteKarmaFiles
+} from './actions';
 
 export function fgNxKarmaToJest(_options: any): Rule {
   return (tree: Tree, _context: SchematicContext) => {
@@ -38,6 +42,7 @@ export function fgNxKarmaToJest(_options: any): Rule {
       _context.logger.info(`Processing: ${projectName} (${projectType})`);
       updateAngularJson(tree, _context, workspace, projectName);
       createJestFiles(tree, _context, workspace, projectName);
+      deleteKarmaFiles(tree, _context, workspace, projectName);
       _context.logger.info(`Done processing: ${projectName} (${projectType})`);
     }
 
