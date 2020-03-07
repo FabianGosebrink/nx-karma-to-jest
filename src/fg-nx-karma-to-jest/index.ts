@@ -1,10 +1,36 @@
-import { Rule, SchematicContext, Tree } from '@angular-devkit/schematics';
+import {
+  Rule,
+  SchematicContext,
+  Tree,
+  SchematicsException
+} from '@angular-devkit/schematics';
+import { ANGULAR_JSON_FILENAME } from './utils/angular-utils';
+import { experimental } from '@angular-devkit/core';
+import { updateCLIConfig } from './actions';
 
-
-// You don't have to export the function as default. You can also have more than one rule factory
-// per file.
 export function fgNxKarmaToJest(_options: any): Rule {
   return (tree: Tree, _context: SchematicContext) => {
+    const workspaceConfig = tree.read(ANGULAR_JSON_FILENAME);
+
+    if (!workspaceConfig) {
+      throw new SchematicsException(
+        'Could not find Angular workspace configuration'
+      );
+    }
+
+    const workspaceContent = workspaceConfig.toString();
+    const workspace: experimental.workspace.WorkspaceSchema = JSON.parse(
+      workspaceContent
+    );
+
+    const allProjects = Object.entries(workspace.projects);
+
+    for (let [projectName, project] of allProjects) {
+      const projectType = project.projectType === 'application' ? 'app' : 'lib';
+      _context.logger.info(`${projectName}: ${projectType}`);
+      updateCLIConfig(tree, _context, workspace, project, projectName);
+    }
+
     return tree;
   };
 }

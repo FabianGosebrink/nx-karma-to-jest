@@ -4,6 +4,10 @@
     "fg-nx-karma-to-jest": {
       "description": "A blank schematic.",
       "factory": "./fg-nx-karma-to-jest/index#fgNxKarmaToJest"
+    },
+    "ng-add": {
+      "description": "A blank schematic.",
+      "factory": "./fg-nx-karma-to-jest/index#fgNxKarmaToJest"
     }
   }
 }
