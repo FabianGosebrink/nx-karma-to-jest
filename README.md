@@ -14,8 +14,8 @@ This schematic will
 
 - Create Jest files inside your project/lib folders
 - Delete Karma files inside your project/lib folders
-- update testing section for your project/lib in the `angular.json` file
-- update the schematic test runner in the `angular.json` file from `karma` to `jest`
-- create Jest files on root level
-- delete Karma file on root level
-- modify `package.json` (remoing Karma deps, adding Jest deps) and install them
+- Update testing section for your project/lib in the `angular.json` file
+- Update the schematic test runner in the `angular.json` file from `karma` to `jest`
+- Create Jest files on root level
+- Delete Karma files on root level
+- Modify `package.json` (removing Karma deps, adding Jest deps) and install them
