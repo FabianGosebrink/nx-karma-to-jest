@@ -49,7 +49,6 @@ describe('nx-karma-to-jest', () => {
     const tree = await runner
       .runSchematicAsync('nx-karma-to-jest', {}, appTree)
       .toPromise();
-    console.log(tree.files);
     expect(tree.files).not.toBe([]);
   });
 });

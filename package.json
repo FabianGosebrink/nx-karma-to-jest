@@ -16,7 +16,7 @@
   "keywords": [
     "schematics"
   ],
-  "author": "",
+  "author": "Fabian Gosebrink",
   "license": "MIT",
   "schematics": "./src/collection.json",
   "dependencies": {
