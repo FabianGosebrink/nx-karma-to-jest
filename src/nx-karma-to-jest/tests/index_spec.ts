@@ -198,65 +198,69 @@ const ANGULAR_JSON_BEFORE = {
   defaultProject: 'myapp'
 };
 
-// const PACKAGE_JSON = {
-//   name: 'schematics-test',
-//   version: '0.0.0',
-//   license: 'MIT',
-//   scripts: {},
-//   private: true,
-//   dependencies: {
-//     '@angular/animations': '9.0.0',
-//     '@angular/common': '9.0.0',
-//     '@angular/compiler': '9.0.0',
-//     '@angular/core': '9.0.0',
-//     '@angular/forms': '9.0.0',
-//     '@angular/platform-browser': '9.0.0',
-//     '@angular/platform-browser-dynamic': '9.0.0',
-//     '@angular/router': '9.0.0',
-//     'core-js': '^2.5.4',
-//     rxjs: '~6.5.0',
-//     'zone.js': '^0.10.2'
-//   },
-//   devDependencies: {
-//     '@angular/cli': '9.0.1',
-//     '@nrwl/angular': '^9.0.4',
-//     '@nrwl/workspace': '9.0.4',
-//     '@types/node': '~8.9.4',
-//     dotenv: '6.2.0',
-//     eslint: '6.1.0',
-//     prettier: '1.18.2',
-//     'ts-node': '~7.0.0',
-//     tslint: '~5.11.0',
-//     typescript: '~3.7.4',
-//     '@angular/compiler-cli': '9.0.0',
-//     '@angular/language-service': '9.0.0',
-//     '@angular-devkit/build-angular': '0.900.1',
-//     codelyzer: '~5.0.1',
-//     karma: '~4.0.0',
-//     'karma-chrome-launcher': '~2.2.0',
-//     'karma-coverage-istanbul-reporter': '~2.0.1',
-//     'karma-jasmine': '~1.1.2',
-//     'karma-jasmine-html-reporter': '^0.2.2',
-//     'jasmine-core': '~2.99.1',
-//     'jasmine-spec-reporter': '~4.2.1',
-//     '@types/jasmine': '~2.8.8',
-//     cypress: '^3.8.2',
-//     '@nrwl/cypress': '9.0.4'
-//   }
-// };
+const PACKAGE_JSON = {
+  name: 'schematics-test',
+  version: '0.0.0',
+  license: 'MIT',
+  scripts: {},
+  private: true,
+  dependencies: {
+    '@angular/animations': '9.0.0',
+    '@angular/common': '9.0.0',
+    '@angular/compiler': '9.0.0',
+    '@angular/core': '9.0.0',
+    '@angular/forms': '9.0.0',
+    '@angular/platform-browser': '9.0.0',
+    '@angular/platform-browser-dynamic': '9.0.0',
+    '@angular/router': '9.0.0',
+    'core-js': '^2.5.4',
+    rxjs: '~6.5.0',
+    'zone.js': '^0.10.2'
+  },
+  devDependencies: {
+    '@angular/cli': '9.0.1',
+    '@nrwl/angular': '^9.0.4',
+    '@nrwl/workspace': '9.0.4',
+    '@types/node': '~8.9.4',
+    dotenv: '6.2.0',
+    eslint: '6.1.0',
+    prettier: '1.18.2',
+    'ts-node': '~7.0.0',
+    tslint: '~5.11.0',
+    typescript: '~3.7.4',
+    '@angular/compiler-cli': '9.0.0',
+    '@angular/language-service': '9.0.0',
+    '@angular-devkit/build-angular': '0.900.1',
+    codelyzer: '~5.0.1',
+    karma: '~4.0.0',
+    'karma-chrome-launcher': '~2.2.0',
+    'karma-coverage-istanbul-reporter': '~2.0.1',
+    'karma-jasmine': '~1.1.2',
+    'karma-jasmine-html-reporter': '^0.2.2',
+    'jasmine-core': '~2.99.1',
+    'jasmine-spec-reporter': '~4.2.1',
+    '@types/jasmine': '~2.8.8',
+    cypress: '^3.8.2',
+    '@nrwl/cypress': '9.0.4'
+  }
+};
 
 describe('nx-karma-to-jest', () => {
   const runner = new SchematicTestRunner('schematics', collectionPath);
   let appTree: Tree;
   beforeEach(() => {
-    appTree = createEmptyWorkspace(Tree.empty());
+    appTree = Tree.empty();
     appTree.create(`angular.json`, JSON.stringify(ANGULAR_JSON_BEFORE));
+    appTree.create(`package.json`, JSON.stringify(PACKAGE_JSON));
     appTree.create(`karma.conf.js`, '');
     appTree.create(`/apps/myapp/karma.conf.js`, '');
     appTree.create(`/apps/myapp/src/test.ts`, '');
+    appTree.create(`/apps/myapp/tsconfig.spec.json`, '');
     appTree.create(`/libs/lib2/karma.conf.js`, '');
+    appTree.create(`/libs/lib2/tsconfig.spec.json`, '');
     appTree.create(`/libs/lib2/src/test.ts`, '');
     appTree.create(`/libs/shared/lib1/karma.conf.js`, '');
+    appTree.create(`/libs/shared/lib1/tsconfig.spec.json`, '');
     appTree.create(`/libs/shared/lib1/src/test.ts`, '');
   });
 
@@ -392,29 +396,72 @@ describe('nx-karma-to-jest', () => {
     });
   });
 
-  // describe('Modifies tsconfig.spec.json', () => {
-  //   it('on app src level', async () => {
-  //     // const expected = {
-  //     //   extends: './tsconfig.json',
-  //     //   compilerOptions: {
-  //     //     outDir: '../../dist/out-tsc',
-  //     //     module: 'commonjs',
-  //     //     types: ['jest', 'node']
-  //     //   },
-  //     //   files: ['src/test-setup.ts'],
-  //     //   include: ['**/*.spec.ts', '**/*.d.ts']
-  //     // };
+  describe('Modifies tsconfig.spec.json', () => {
+    it('on app level', async () => {
+      const expected = {
+        extends: './tsconfig.json',
+        compilerOptions: {
+          outDir: '../../dist/out-tsc',
+          module: 'commonjs',
+          types: ['jest', 'node']
+        },
+        files: ['src/test-setup.ts'],
+        include: ['**/*.spec.ts', '**/*.d.ts']
+      };
 
-  //     const tree = await runner
-  //       .runSchematicAsync('nx-karma-to-jest', {}, appTree)
-  //       .toPromise();
+      const tree = await runner
+        .runSchematicAsync('nx-karma-to-jest', {}, appTree)
+        .toPromise();
 
-  //     const newContent = tree.readContent('/apps/myapp/tsconfig.spec.json');
-  //     console.log('newContent', newContent);
-  //     // const newObject = JSON.parse(newContent);
-  //     // expect(newObject).toEqual(expected);
-  //   });
-  // });
+      const newContent = tree.readContent('/apps/myapp/tsconfig.spec.json');
+      const newObject = JSON.parse(newContent);
+      expect(newObject).toEqual(expected);
+    });
+
+    it('on lib level', async () => {
+      const expected = {
+        extends: './tsconfig.json',
+        compilerOptions: {
+          outDir: '../../dist/out-tsc',
+          module: 'commonjs',
+          types: ['jest', 'node']
+        },
+        files: ['src/test-setup.ts'],
+        include: ['**/*.spec.ts', '**/*.d.ts']
+      };
+
+      const tree = await runner
+        .runSchematicAsync('nx-karma-to-jest', {}, appTree)
+        .toPromise();
+
+      const newContent = tree.readContent('/libs/lib2/tsconfig.spec.json');
+      const newObject = JSON.parse(newContent);
+      expect(newObject).toEqual(expected);
+    });
+
+    it('on nested lib level', async () => {
+      const expected = {
+        extends: './tsconfig.json',
+        compilerOptions: {
+          outDir: '../../../dist/out-tsc',
+          module: 'commonjs',
+          types: ['jest', 'node']
+        },
+        files: ['src/test-setup.ts'],
+        include: ['**/*.spec.ts', '**/*.d.ts']
+      };
+
+      const tree = await runner
+        .runSchematicAsync('nx-karma-to-jest', {}, appTree)
+        .toPromise();
+
+      const newContent = tree.readContent(
+        '/libs/shared/lib1/tsconfig.spec.json'
+      );
+      const newObject = JSON.parse(newContent);
+      expect(newObject).toEqual(expected);
+    });
+  });
 
   describe('modified angular json', () => {
     it('app test section', async () => {
