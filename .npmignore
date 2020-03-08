@@ -5,3 +5,4 @@
 .vscode
 sandbox
 .prettierrc
+/src/nx-karma-to-jest/tests
