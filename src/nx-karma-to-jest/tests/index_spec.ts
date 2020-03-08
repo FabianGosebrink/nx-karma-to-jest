@@ -30,22 +30,64 @@ describe('nx-karma-to-jest', () => {
     expect(appTree.files.find(x => x === '/angular.json')).toBeDefined();
   });
 
-  it('modified angular json', async () => {
-    const expected = {
-      builder: '@nrwl/jest:jest',
-      options: {
-        jestConfig: 'apps/myapp/jest.config.js',
-        tsConfig: 'apps/myapp/tsconfig.spec.json',
-        passWithNoTests: true,
-        setupFile: 'apps/myapp/src/test-setup.ts'
-      }
-    };
+  describe('modified angular json', () => {
+    it('app test section', async () => {
+      const expected = {
+        builder: '@nrwl/jest:jest',
+        options: {
+          jestConfig: 'apps/myapp/jest.config.js',
+          tsConfig: 'apps/myapp/tsconfig.spec.json',
+          passWithNoTests: true,
+          setupFile: 'apps/myapp/src/test-setup.ts'
+        }
+      };
 
-    const tree = await runner
-      .runSchematicAsync('nx-karma-to-jest', {}, appTree)
-      .toPromise();
-    const newContent = tree.readContent('/angular.json');
-    const newObject = JSON.parse(newContent);
-    expect(newObject.projects.myapp.architect.test).toEqual(expected);
+      const tree = await runner
+        .runSchematicAsync('nx-karma-to-jest', {}, appTree)
+        .toPromise();
+      const newContent = tree.readContent('/angular.json');
+      const newObject = JSON.parse(newContent);
+      expect(newObject.projects.myapp.architect.test).toEqual(expected);
+    });
+
+    it('lib test section', async () => {
+      const expected = {
+        builder: '@nrwl/jest:jest',
+        options: {
+          jestConfig: 'libs/lib2/jest.config.js',
+          tsConfig: 'libs/lib2/tsconfig.spec.json',
+          passWithNoTests: true,
+          setupFile: 'libs/lib2/src/test-setup.ts'
+        }
+      };
+
+      const tree = await runner
+        .runSchematicAsync('nx-karma-to-jest', {}, appTree)
+        .toPromise();
+      const newContent = tree.readContent('/angular.json');
+      const newObject = JSON.parse(newContent);
+      expect(newObject.projects.lib2.architect.test).toEqual(expected);
+    });
+
+    it('nested lib test section', async () => {
+      const expected = {
+        builder: '@nrwl/jest:jest',
+        options: {
+          jestConfig: 'libs/shared/lib1/jest.config.js',
+          tsConfig: 'libs/shared/lib1/tsconfig.spec.json',
+          passWithNoTests: true,
+          setupFile: 'libs/shared/lib1/src/test-setup.ts'
+        }
+      };
+
+      const tree = await runner
+        .runSchematicAsync('nx-karma-to-jest', {}, appTree)
+        .toPromise();
+      const newContent = tree.readContent('/angular.json');
+      const newObject = JSON.parse(newContent);
+      expect(newObject.projects['shared-lib1'].architect.test).toEqual(
+        expected
+      );
+    });
   });
 });
