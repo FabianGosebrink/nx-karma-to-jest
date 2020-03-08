@@ -9,6 +9,7 @@ import { Schema as ApplicationOptions } from '@schematics/angular/application/sc
 const collectionPath = path.join(__dirname, '../collection.json');
 
 describe('nx-karma-to-jest', () => {
+  let appTree: UnitTestTree;
   const runner = new SchematicTestRunner('schematics', collectionPath);
 
   const workspaceOptions: WorkspaceOptions = {
@@ -26,28 +27,29 @@ describe('nx-karma-to-jest', () => {
     skipPackageJson: false
   };
 
-  let appTree: UnitTestTree;
-  beforeEach(() => {
-    appTree = runner.runExternalSchematic(
-      '@schematics/angular',
-      'workspace',
-      workspaceOptions
-    );
-    appTree = runner.runExternalSchematic(
-      '@schematics/angular',
-      'application',
-      appOptions,
-      appTree
-    );
+  beforeEach(async () => {
+    appTree = await runner
+      .runExternalSchematicAsync(
+        '@schematics/angular',
+        'workspace',
+        workspaceOptions
+      )
+      .toPromise();
+    appTree = await runner
+      .runExternalSchematicAsync(
+        '@schematics/angular',
+        'application',
+        appOptions,
+        appTree
+      )
+      .toPromise();
   });
 
   it('works', async () => {
-    // const tree = await runner.runSchematicAsync(
-    //   'nx-karma-to-jest',
-    //   {},
-    //   appTree
-    // );
-    // console.log(tree.files);
-    //expect(tree.files).toEqual([]);
+    const tree = await runner
+      .runSchematicAsync('nx-karma-to-jest', {}, appTree)
+      .toPromise();
+    console.log(tree.files);
+    expect(tree.files).not.toBe([]);
   });
 });
