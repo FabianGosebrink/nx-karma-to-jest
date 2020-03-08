@@ -2,54 +2,21 @@ import {
   Rule,
   SchematicContext,
   Tree,
-  SchematicsException
+  chain
 } from '@angular-devkit/schematics';
-import {
-  ANGULAR_JSON_FILENAME,
-  hasTestingSection
-} from './utils/angular-utils';
-import { experimental } from '@angular-devkit/core';
-import {
-  updateAngularJson,
-  createJestFiles,
-  deleteKarmaFiles,
-  modifyDependenciesInPackageJson
-} from './actions';
+import { getAngularWorkspace } from './utils/angular-utils';
+import { updateProjectsAndLibs } from './actions/project-actions';
+import { updateRootWorkspace } from './actions/root-actions';
 
 export function nxKarmaToJest(_options: any): Rule {
   return (tree: Tree, _context: SchematicContext) => {
-    const workspaceConfig = tree.read(ANGULAR_JSON_FILENAME);
+    const workspace = getAngularWorkspace(tree);
 
-    if (!workspaceConfig) {
-      throw new SchematicsException(
-        'Could not find Angular workspace configuration'
-      );
-    }
+    const projectAndLibActions = updateProjectsAndLibs(workspace, _context);
+    const workspaceActions = updateRootWorkspace(workspace);
 
-    const workspaceContent = workspaceConfig.toString();
-    const workspace: experimental.workspace.WorkspaceSchema = JSON.parse(
-      workspaceContent
-    );
+    const rulesToApply = [...projectAndLibActions, ...workspaceActions];
 
-    const allProjects = Object.entries(workspace.projects);
-
-    for (let [projectName, project] of allProjects) {
-      const projectType = project.projectType === 'application' ? 'app' : 'lib';
-
-      if (!hasTestingSection(project, _context)) {
-        _context.logger.debug(
-          `${projectName} (${projectType}) has no testing section, skipping...`
-        );
-        continue;
-      }
-
-      updateAngularJson(tree, _context, workspace, projectName);
-      createJestFiles(tree, _context, workspace, projectName);
-      deleteKarmaFiles(tree, _context, workspace, projectName);
-    }
-
-    modifyDependenciesInPackageJson(tree, _context);
-
-    return tree;
+    return chain(rulesToApply)(tree, _context);
   };
 }

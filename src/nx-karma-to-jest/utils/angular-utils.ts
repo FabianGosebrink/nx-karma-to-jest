@@ -31,3 +31,20 @@ export function safeFileDelete(tree: Tree, path: string): boolean {
     return false;
   }
 }
+
+export function getAngularWorkspace(tree: Tree) {
+  const workspaceConfig = tree.read(ANGULAR_JSON_FILENAME);
+
+  if (!workspaceConfig) {
+    throw new SchematicsException(
+      'Could not find Angular workspace configuration'
+    );
+  }
+
+  const workspaceContent = workspaceConfig.toString();
+  const workspace: experimental.workspace.WorkspaceSchema = JSON.parse(
+    workspaceContent
+  );
+
+  return workspace;
+}

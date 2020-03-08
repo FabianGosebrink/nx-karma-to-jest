@@ -1,4 +1,4 @@
-import { Tree, SchematicContext } from '@angular-devkit/schematics';
+import { Tree, SchematicContext, Rule } from '@angular-devkit/schematics';
 import {
   addPackageJsonDependency,
   NodeDependency,
@@ -26,14 +26,15 @@ const dependenciesToRemove = [
   '@types/jasmine'
 ];
 
-export function modifyDependenciesInPackageJson(
-  tree: Tree,
-  _context: SchematicContext
-) {
-  deleteDependenciesFromPackageJson(tree);
-  addDependenciesToPackageJson(tree, _context);
+export function modifyDependenciesInPackageJson(): Rule {
+  return (tree: Tree, _context: SchematicContext) => {
+    deleteDependenciesFromPackageJson(tree);
+    addDependenciesToPackageJson(tree, _context);
 
-  _context.addTask(new NodePackageInstallTask());
+    _context.addTask(new NodePackageInstallTask());
+
+    return tree;
+  };
 }
 
 function addDependenciesToPackageJson(tree: Tree, _context: SchematicContext) {
@@ -59,7 +60,7 @@ function createNodeDependency(
   };
 }
 
-export function deleteDependenciesFromPackageJson(tree: Tree) {
+function deleteDependenciesFromPackageJson(tree: Tree) {
   dependenciesToRemove.forEach(toRemove => {
     removePackageJsonDependency(tree, toRemove);
   });

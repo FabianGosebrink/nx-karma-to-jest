@@ -1,47 +1,28 @@
 import {
   SchematicContext,
   Tree,
-  SchematicsException
+  SchematicsException,
+  Rule
 } from '@angular-devkit/schematics';
 import { experimental } from '@angular-devkit/core';
 
-const ROOT_JEST_CONFIG = `
-module.exports = {
-  testMatch: ['**/+(*.)+(spec|test).+(ts|js)?(x)'],
-  transform: {
-      '^.+\\.(ts|js|html)$': 'ts-jest'
-  },
-  resolver: '@nrwl/jest/plugins/resolver',
-  moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageReporters: ['html']
-};
-`;
-
-export function createJestFiles(
-  tree: Tree,
-  context: SchematicContext,
+export function createProjectsJestFiles(
   workspace: experimental.workspace.WorkspaceSchema,
   projectName: string
-) {
-  const project = workspace.projects[projectName];
+): Rule {
+  return (tree: Tree, _context: SchematicContext) => {
+    const project = workspace.projects[projectName];
 
-  if (!project?.architect) {
-    throw new SchematicsException(`Project ${projectName} not found`);
-  }
+    if (!project?.architect) {
+      throw new SchematicsException(`Project ${projectName} not found`);
+    }
 
-  createRootJestConfig(tree, context);
-  createProjectJestConfig(tree, project, context, projectName);
-  createProjectSpecTsConfig(tree, project, context);
-  createTestSetup(tree, project, context);
-}
-function createRootJestConfig(tree: Tree, context: SchematicContext) {
-  const path = `./jest.config.js`;
-  if (tree.exists(path)) {
-    context.logger.info(`${path} already exists, skipping`);
-    return;
-  }
+    createProjectJestConfig(tree, project, _context, projectName);
+    createProjectSpecTsConfig(tree, project, _context);
+    createTestSetup(tree, project, _context);
 
-  tree.create(path, ROOT_JEST_CONFIG);
+    return tree;
+  };
 }
 
 function createProjectJestConfig(
