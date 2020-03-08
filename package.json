@@ -1,11 +1,11 @@
 {
-  "name": "@fabiangosebrink/nx-karma-to-jest",
+  "name": "@offeringsolutions/nx-karma-to-jest",
   "version": "0.1.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/FabianGosebrink/nx-karma-to-jest.git"
   },
-  "description": "A blank schematics",
+  "description": "Replacing Karma with Jest in an nx workspace",
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "build:watch": "tsc -p tsconfig.json --watch",
