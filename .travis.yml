@@ -1,0 +1,12 @@
+sudo: required
+addons:
+  chrome: stable
+language: node_js
+node_js:
+  - '12'
+before_install:
+  - npm i npm@latest -g
+install:
+  - npm install
+script:
+  - npm test
