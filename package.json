@@ -14,7 +14,7 @@
     "release": "release-it"
   },
   "keywords": [
-    "schematics"
+    "schematics", "angular", "nx", "karma", "jest"
   ],
   "author": "Fabian Gosebrink",
   "license": "MIT",
