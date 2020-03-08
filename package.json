@@ -10,7 +10,8 @@
     "build": "tsc -p tsconfig.json",
     "build:watch": "tsc -p tsconfig.json --watch",
     "test": "npm run build && jasmine src/**/*_spec.js",
-    "release:dryrun": "release-it --dry-run"
+    "release:dryrun": "release-it --dry-run",
+    "release": "release-it"
   },
   "keywords": [
     "schematics"
