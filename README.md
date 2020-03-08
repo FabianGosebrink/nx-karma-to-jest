@@ -2,7 +2,7 @@
 
 ![TravisCi build](https://travis-ci.org/FabianGosebrink/nx-karma-to-jest.svg?branch=master 'Travis CI Build')
 
-![commandline usage](.github/cmd.png 'Commandline usage')
+![commandline usage](.github/ng-cmd.png 'Commandline usage')
 
 ## Description
 
