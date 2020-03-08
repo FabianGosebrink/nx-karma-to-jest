@@ -1,8 +1,11 @@
 # Ignores TypeScript files, but keeps definitions.
 *.ts
 !*.d.ts
+**/*_spec.ts
+**/*_spec.d.ts
 .github
 .vscode
 sandbox
 .prettierrc
+.travis.yml
 /src/nx-karma-to-jest/tests
