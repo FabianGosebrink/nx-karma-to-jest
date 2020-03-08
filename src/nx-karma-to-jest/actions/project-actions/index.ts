@@ -5,7 +5,7 @@ import { addTestingSectionToAngularJson } from './add-testing-section-to-angular
 import { deleteProjectKarmaFiles } from './delete-projects-karma-files';
 import { createProjectsJestFiles } from './create-projects-jest-files';
 
-export function updateProjectsAndLibs(
+export function getRulesForProjectsAndLibs(
   workspace: WorkspaceSchema,
   _context: SchematicContext
 ) {

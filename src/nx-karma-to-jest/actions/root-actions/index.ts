@@ -5,7 +5,7 @@ import { createRootJestFiles } from './create-root-jest-files';
 import { deleteRootKarmaFiles } from './delete-root-karma-files';
 import { modifyDependenciesInPackageJson } from './modify-dependencies';
 
-export function updateRootWorkspace(workspace: WorkspaceSchema) {
+export function getRulesForWorkspaceRoot(workspace: WorkspaceSchema) {
   let rulesToApply: Rule[] = [];
 
   rulesToApply.push(updateAngularJson(workspace));
