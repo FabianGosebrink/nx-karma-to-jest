@@ -22,7 +22,6 @@
   "dependencies": {
     "@angular-devkit/core": "^9.0.5",
     "@angular-devkit/schematics": "^9.0.5",
-    "@nrwl/workspace": "^9.0.4",
     "typescript": "~3.7.4"
   },
   "devDependencies": {
