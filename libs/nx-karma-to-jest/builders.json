@@ -1,0 +1,10 @@
+{
+  "$schema": "../../node_modules/@angular-devkit/architect/src/builders-schema.json",
+  "builders": {
+    "build": {
+      "implementation": "./src/builders/nx-karma-to-jest/builder",
+      "schema": "./src/builders/nx-karma-to-jest/schema.json",
+      "description": "nx-karma-to-jest builder"
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "npmScope": "offeringsolutions",
+  "implicitDependencies": {
+    "workspace.json": "*",
+    "package.json": {
+      "dependencies": "*",
+      "devDependencies": "*"
+    },
+    "tsconfig.json": "*",
+    "tslint.json": "*",
+    "nx.json": "*"
+  },
+  "projects": {
+    "nx-karma-to-jest": {
+      "tags": []
+    },
+    "nx-karma-to-jest-e2e": {
+      "tags": [],
+      "implicitDependencies": ["nx-karma-to-jest"]
+    }
+  }
+}

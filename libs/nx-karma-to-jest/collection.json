@@ -1,0 +1,21 @@
+{
+  "$schema": "../../node_modules/@angular-devkit/schematics/collection-schema.json",
+  "name": "nx-karma-to-jest",
+  "version": "0.0.1",
+  "schematics": {
+    "nxKarmaToJest": {
+      "factory": "./src/schematics/nx-karma-to-jest/schematic",
+      "schema": "./src/schematics/nx-karma-to-jest/schema.json",
+      "description": "nx-karma-to-jest schematic"
+    },
+    "nx-karma-to-jest": {
+      "factory": "./src/schematics/nx-karma-to-jest/schematic",
+      "schema": "./src/schematics/nx-karma-to-jest/schema.json",
+      "description": "nx-karma-to-jest schematic"
+    },
+    "ng-add": {
+      "description": "Replacing Karma with Jest in an nx workspace",
+      "factory": "./src/schematics/nx-karma-to-jest/schematic"
+    }
+  }
+}

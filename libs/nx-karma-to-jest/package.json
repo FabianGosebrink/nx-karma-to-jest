@@ -1,0 +1,21 @@
+{
+  "name": "@offeringsolutions/nx-karma-to-jest",
+  "version": "0.1.3",
+  "main": "src/index.js",
+  "schematics": "./collection.json",
+  "builders": "./builders.json",
+  "keywords": [
+    "schematics",
+    "angular",
+    "nx",
+    "karma",
+    "jest"
+  ],
+  "author": "Fabian Gosebrink",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/FabianGosebrink/nx-karma-to-jest.git"
+  },
+  "description": "Replacing Karma with Jest in an nx workspace"
+}
