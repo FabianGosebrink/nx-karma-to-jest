@@ -32,9 +32,9 @@
     "release:dryrun": "npm run build:nx:karma:to:jest && cd dist/libs/nx-karma-to-jest && release-it --dry-run",
     "release": "npm run build:nx:karma:to:jest && cd dist/libs/nx-karma-to-jest && release-it"
   },
-  "private": true,
-  "dependencies": {},
+  "private": false,
   "devDependencies": {
+    "@angular-devkit/schematics": "^9.1.0",
     "@nrwl/eslint-plugin-nx": "9.0.4",
     "@nrwl/jest": "9.0.4",
     "@nrwl/nx-plugin": "9.0.4",
